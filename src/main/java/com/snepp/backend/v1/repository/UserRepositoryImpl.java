@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
   @Override
   public RegisterResponse saveUser(UserEntity userEntity) {
     UserEntity user = mongoTemplate.save(userEntity);
-    log.info("User Saved. Reult : {}", user);
+    log.info("User Saved. Result : {}", user);
 
     return RegisterResponse.builder().id(user.getId().toString()).token("asdas").build();
   }
@@ -51,6 +51,4 @@ public class UserRepositoryImpl implements UserRepository {
         .addCriteria(Criteria.where("password").is(loginRequest.getPassword()));
     return mongoTemplate.findOne(query, UserEntity.class);
   }
-
-
 }
