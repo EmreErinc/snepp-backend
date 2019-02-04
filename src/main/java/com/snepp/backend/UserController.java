@@ -1,4 +1,4 @@
-package com.snepp.backend.v1.controller;
+package com.snepp.backend;
 
 import com.snepp.backend.v1.model.request.LoginRequest;
 import com.snepp.backend.v1.model.request.RegisterRequest;
