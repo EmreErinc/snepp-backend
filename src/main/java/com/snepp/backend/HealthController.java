@@ -15,10 +15,10 @@ public class HealthController {
     this.sneppService = sneppService;
   }
 
-  @RequestMapping(method = RequestMethod.GET, value = "/")
+  /*@RequestMapping(method = RequestMethod.GET, value = "/")
   public String health(){
     return "healthy connection";
-  }
+  }*/
 
   @RequestMapping(method = RequestMethod.GET, value = "/")
   public SingleSneppResponse snepp(){
