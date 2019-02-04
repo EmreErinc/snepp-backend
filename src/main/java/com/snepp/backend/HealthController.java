@@ -24,14 +24,4 @@ public class HealthController {
   public SingleSneppResponse snepp(@PathVariable String sneppId){
     return sneppService.getSnepp(sneppId);
   }
-
-  /*@RequestMapping(method = RequestMethod.POST, value = "/")
-  public boolean add(@RequestBody SneppRequest sneppRequest){
-    return sneppService.save(sneppRequest);
-  }
-
-  @RequestMapping(method = RequestMethod.GET, value = "/{sneppId}")
-  public SingleSneppResponse snepp(@PathVariable String sneppId){
-    return sneppService.getSnepp(sneppId);
-  }*/
 }
