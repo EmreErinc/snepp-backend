@@ -8,11 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class HealthController {
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public String health(){
-    return "healthy connection";
-  }
-
   private SneppService sneppService;
 
   @Autowired
@@ -20,7 +15,17 @@ public class HealthController {
     this.sneppService = sneppService;
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/")
+  @RequestMapping(method = RequestMethod.GET, value = "/")
+  public String health(){
+    return "healthy connection";
+  }
+
+  @RequestMapping(method = RequestMethod.GET, value = "/a")
+  public SingleSneppResponse snepp(@PathVariable String sneppId){
+    return sneppService.getSnepp(sneppId);
+  }
+
+  /*@RequestMapping(method = RequestMethod.POST, value = "/")
   public boolean add(@RequestBody SneppRequest sneppRequest){
     return sneppService.save(sneppRequest);
   }
@@ -28,5 +33,5 @@ public class HealthController {
   @RequestMapping(method = RequestMethod.GET, value = "/{sneppId}")
   public SingleSneppResponse snepp(@PathVariable String sneppId){
     return sneppService.getSnepp(sneppId);
-  }
+  }*/
 }
