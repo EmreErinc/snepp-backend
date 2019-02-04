@@ -17,7 +17,7 @@ import java.util.List;
 public class SneppController {
   private SneppService sneppService;
 
-  @Autowired
+  //@Autowired
   public SneppController(SneppService sneppService) {
     this.sneppService = sneppService;
   }
