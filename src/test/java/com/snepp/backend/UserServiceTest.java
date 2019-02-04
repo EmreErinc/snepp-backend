@@ -22,7 +22,7 @@ public class UserServiceTest {
 
   @Test
   public void shouldPassRegister(){
-    /*RegisterRequest registerRequest = RegisterRequest.builder()
+    RegisterRequest registerRequest = RegisterRequest.builder()
         .name("test-name")
         .lastName("test-lm")
         .email("test@mail.com")
@@ -30,6 +30,6 @@ public class UserServiceTest {
         .build();
 
     RegisterResponse registerResponse = userService.register(registerRequest);
-    assertNotNull(registerResponse);*/
+    assertNotNull(registerResponse);
   }
 }

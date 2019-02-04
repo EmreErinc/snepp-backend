@@ -1,4 +1,4 @@
-package com.snepp.backend;
+package com.snepp.backend.v1.controller;
 
 import com.snepp.backend.v1.model.request.SneppRequest;
 import com.snepp.backend.v1.model.response.SingleSneppResponse;
