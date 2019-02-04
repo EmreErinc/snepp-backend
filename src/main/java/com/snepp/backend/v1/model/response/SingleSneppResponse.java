@@ -15,7 +15,6 @@ import org.bson.types.ObjectId;
 @Setter
 @JsonSerialize
 public class SingleSneppResponse {
-  public ObjectId id;
   public String name;
   public String description;
   public String language;

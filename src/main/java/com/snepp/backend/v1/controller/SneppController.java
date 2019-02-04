@@ -22,9 +22,9 @@ public class SneppController {
     this.sneppService = sneppService;
   }
 
-  @RequestMapping(method = RequestMethod.POST)
+  @RequestMapping(method = RequestMethod.POST, value = "/")
   public boolean add(@RequestBody SneppRequest sneppRequest){
-    return sneppService.save(sneppRequest, null);
+    return sneppService.save(sneppRequest);
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{sneppId}")

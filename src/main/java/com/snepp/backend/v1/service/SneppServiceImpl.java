@@ -21,10 +21,10 @@ public class SneppServiceImpl implements SneppService {
   private SneppRepository sneppRepository;
 
   @Override
-  public boolean save(SneppRequest sneppRequest, String ownerId) {
+  public boolean save(SneppRequest sneppRequest) {
     boolean result = false;
     SneppEntity sneppEntity = SneppEntity.builder()
-        .ownerId(ownerId)
+        .ownerId(sneppRequest.ownerId)
         .name(sneppRequest.name)
         .description(sneppRequest.description)
         .language(sneppRequest.language)
@@ -49,6 +49,7 @@ public class SneppServiceImpl implements SneppService {
         .description(sneppEntity.getDescription())
         .language(sneppEntity.getLanguage())
         .snippet(sneppEntity.getSnippet())
+        .type(sneppEntity.getType())
         .ownerId(sneppEntity.getOwnerId())
         .build();
   }
@@ -59,6 +60,7 @@ public class SneppServiceImpl implements SneppService {
     return sneppEntities.stream()
         .map(sneppEntity ->
             SneppResponse.builder()
+                .id(sneppEntity.getId().toString())
                 .name(sneppEntity.getName())
                 .snippet(sneppEntity.getSnippet())
                 .build())

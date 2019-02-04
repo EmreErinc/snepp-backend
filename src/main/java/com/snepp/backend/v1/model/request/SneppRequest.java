@@ -19,4 +19,5 @@ public class SneppRequest {
   public String language;
   public String snippet;
   public SneppType type;
+  public String ownerId;
 }
