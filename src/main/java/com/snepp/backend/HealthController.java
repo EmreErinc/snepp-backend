@@ -20,8 +20,9 @@ public class HealthController {
     return "healthy connection";
   }
 
-  @RequestMapping(method = RequestMethod.GET, value = "/a")
-  public SingleSneppResponse snepp(@PathVariable String sneppId){
+  @RequestMapping(method = RequestMethod.GET, value = "/")
+  public SingleSneppResponse snepp(){
+    String sneppId = "5c5822bb82ef09251adac5b5";
     return sneppService.getSnepp(sneppId);
   }
 }
