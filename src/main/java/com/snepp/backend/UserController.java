@@ -4,7 +4,6 @@ import com.snepp.backend.v1.model.request.LoginRequest;
 import com.snepp.backend.v1.model.request.RegisterRequest;
 import com.snepp.backend.v1.model.response.LoginResponse;
 import com.snepp.backend.v1.model.response.RegisterResponse;
-import com.snepp.backend.v1.repository.UserRepository;
 import com.snepp.backend.v1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

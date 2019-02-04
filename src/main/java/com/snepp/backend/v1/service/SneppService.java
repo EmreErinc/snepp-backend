@@ -1,6 +1,5 @@
 package com.snepp.backend.v1.service;
 
-import com.snepp.backend.v1.model.entity.SneppEntity;
 import com.snepp.backend.v1.model.request.SneppRequest;
 import com.snepp.backend.v1.model.response.SingleSneppResponse;
 import com.snepp.backend.v1.model.response.SneppResponse;
