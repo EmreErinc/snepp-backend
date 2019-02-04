@@ -15,7 +15,6 @@ import java.time.Instant;
 /**
  * Created by emre on 28.01.2019
  */
-@Slf4j
 @Configuration
 public class UserServiceImpl implements UserService {
   @Autowired

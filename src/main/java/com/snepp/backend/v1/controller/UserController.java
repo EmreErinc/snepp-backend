@@ -25,12 +25,12 @@ public class UserController {
     this.userService = userService;
   }
 
-  @RequestMapping(value = "/register", method = RequestMethod.POST)
+  @RequestMapping(method = RequestMethod.POST, value = "/register")
   public RegisterResponse register(@RequestBody RegisterRequest registerRequest){
     return userService.register(registerRequest);
   }
 
-  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  @RequestMapping(method = RequestMethod.POST, value = "/login")
   public LoginResponse login(@RequestBody LoginRequest loginRequest){
     return userService.login(loginRequest);
   }

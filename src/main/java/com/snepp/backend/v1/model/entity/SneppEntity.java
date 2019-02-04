@@ -29,4 +29,5 @@ public class SneppEntity {
   private Long updatedAt;
   private List<Share> shareList;
   private SneppType type;
+  private String ownerId;
 }
