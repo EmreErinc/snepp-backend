@@ -13,7 +13,6 @@ import java.util.List;
  * Created by emre on 28.01.2019
  */
 @RestController
-@RequestMapping(value = "/v1/snepp")
 public class SneppController {
   private SneppService sneppService;
 
@@ -22,17 +21,17 @@ public class SneppController {
     this.sneppService = sneppService;
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/")
+  @RequestMapping(method = RequestMethod.POST, value = "/v1/snepp/")
   public boolean add(@RequestBody SneppRequest sneppRequest){
     return sneppService.save(sneppRequest);
   }
 
-  @RequestMapping(method = RequestMethod.GET, value = "/{sneppId}")
+  @RequestMapping(method = RequestMethod.GET, value = "/v1/snepp/{sneppId}")
   public SingleSneppResponse snepp(@PathVariable String sneppId){
     return sneppService.getSnepp(sneppId);
   }
 
-  @RequestMapping(method = RequestMethod.GET, value = "/list/{ownerId}")
+  @RequestMapping(method = RequestMethod.GET, value = "/v1/snepp/list/{ownerId}")
   public List<SneppResponse> list(@PathVariable String ownerId){
     return sneppService.listSneppByOwnerId(ownerId);
   }
