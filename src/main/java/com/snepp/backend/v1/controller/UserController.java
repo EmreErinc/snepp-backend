@@ -6,14 +6,12 @@ import com.snepp.backend.v1.model.response.LoginResponse;
 import com.snepp.backend.v1.model.response.RegisterResponse;
 import com.snepp.backend.v1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by emre on 28.01.2019
  */
+@CrossOrigin(origins = "http://localhost:8000", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/v1")
 public class UserController {
