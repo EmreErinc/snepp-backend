@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by emre on 28.01.2019
  */
-@CrossOrigin(origins = "http://localhost:8000")
+//@CrossOrigin(origins = "http://localhost:8000")
 @RestController
 @RequestMapping(value = "/v1/snepp")
 public class SneppController {

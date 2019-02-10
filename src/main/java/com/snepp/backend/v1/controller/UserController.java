@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by emre on 28.01.2019
  */
-@CrossOrigin(origins = "http://localhost:8000", maxAge = 3600)
+//@CrossOrigin(origins = "http://localhost:8000", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/v1")
 public class UserController {
