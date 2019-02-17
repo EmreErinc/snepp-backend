@@ -6,6 +6,7 @@ import com.snepp.backend.v1.model.request.LoginRequest;
 import com.snepp.backend.v1.model.request.RegisterRequest;
 import com.snepp.backend.v1.model.response.RegisterResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,25 +24,18 @@ public class UserRepositoryImpl implements UserRepository {
   private MongoTemplate mongoTemplate;
 
   @Override
-  public RegisterResponse saveUser(UserEntity userEntity) {
+  public ObjectId saveUser(UserEntity userEntity) {
     UserEntity user = mongoTemplate.save(userEntity);
     log.info("User Saved. Result : {}", user);
-
-    return RegisterResponse.builder().id(user.getId().toString()).token("asdas").build();
+    return user.getId();
+    //return RegisterResponse.builder().id(user.getId().toString()).build();
   }
 
   @Override
-  public boolean existsEmail(String email) {
+  public boolean isExistsEmail(String email) {
     Query query = new Query();
     query.addCriteria(Criteria.where("email").is(email));
     return mongoTemplate.exists(query, UserEntity.class);
-  }
-
-  @Override
-  public UserEntity findUserWithEmail(String email) {
-    Query query = new Query();
-    query.addCriteria(Criteria.where("email").is(email));
-    return mongoTemplate.findOne(query, UserEntity.class);
   }
 
   @Override
@@ -49,6 +43,18 @@ public class UserRepositoryImpl implements UserRepository {
     Query query = new Query();
     query.addCriteria(Criteria.where("email").is(loginRequest.getEmail()))
         .addCriteria(Criteria.where("password").is(loginRequest.getPassword()));
+    return mongoTemplate.findOne(query, UserEntity.class);
+  }
+
+  @Override
+  public UserEntity findByUserId(String userId) {
+    return mongoTemplate.findById(userId, UserEntity.class);
+  }
+
+  @Override
+  public UserEntity findByEmail(String email) {
+    Query query = new Query();
+    query.addCriteria(Criteria.where("email").is(email));
     return mongoTemplate.findOne(query, UserEntity.class);
   }
 }
