@@ -1,5 +1,6 @@
 package com.snepp.backend.v1.model.entity;
 
+import com.snepp.backend.v1.model.Role;
 import com.snepp.backend.v1.model.Share;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class UserEntity {
   private String password;
   private Long registrationAt;
   private List<Share> userTeams;
+  private List<Role> roles;
 
   @Override
   public String toString() {
@@ -37,6 +39,7 @@ public class UserEntity {
         ", password='" + password + '\'' +
         ", registrationAt=" + registrationAt +
         ", userTeams=" + userTeams +
+        ", roles=" + roles +
         '}';
   }
 }

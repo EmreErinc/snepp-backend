@@ -21,7 +21,7 @@ public class UserServiceTest {
   private UserService userService;
 
   @Test
-  public void shouldPassRegister(){
+  public void shouldPassRegister() throws Exception {
     RegisterRequest registerRequest = RegisterRequest.builder()
         .name("test-name")
         .lastName("test-lm")
