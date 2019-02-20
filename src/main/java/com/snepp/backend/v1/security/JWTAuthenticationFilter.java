@@ -1,12 +1,8 @@
 package com.snepp.backend.v1.security;
 
-import com.snepp.backend.v1.service.UserService;
-import com.snepp.backend.v1.service.UserServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,9 +30,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
   private UserDetailsService userDetailsService;
 
   @Autowired
-  private UserServiceImpl userServiceImpl;
-
-  @Autowired
   private JwtTokenProvider tokenProvider;
 
   @Override
@@ -44,15 +37,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                   HttpServletResponse response,
                                   FilterChain filterChain) throws ServletException, IOException {
     String header = request.getHeader(HEADER_STRING);
-    //String userId = null;
-    String username = null;
+    String userId = null;
+    //String username = null;
     String accessToken = null;
 
     if (header != null && header.startsWith(TOKEN_PREFIX)) {
       accessToken = header.replace(TOKEN_PREFIX, "");
       try {
-        //userId = tokenProvider.getIdFromToken(accessToken);
-        username = tokenProvider.getUsernameFromToken(accessToken);
+        userId = tokenProvider.getIdFromToken(accessToken);
+        //username = tokenProvider.getUsernameFromToken(accessToken);
       } catch (IllegalArgumentException e) {
         logger.error("an error occured during getting username from token", e);
       } catch (ExpiredJwtException e) {
@@ -64,15 +57,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
       logger.warn("couldn't find bearer string, will ignore the header");
     }
 
-    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+      UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
       //UserDetails userDetails = userServiceImpl.loadUserByUsername(username);
 
-
-      if (tokenProvider.validateToken(accessToken, userDetails)) {
+      if (tokenProvider.validateToken(accessToken)) {
         UsernamePasswordAuthenticationToken authentication = tokenProvider.getAuthentication(accessToken, userDetails);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        logger.info("authenticated user " + username + ", setting security context");
+        logger.info("authenticated user " + userId + ", setting security context");
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     }

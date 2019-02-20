@@ -3,14 +3,11 @@ package com.snepp.backend.v1.security;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.accessibility.AccessibleStreamable;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -25,28 +22,13 @@ import static com.snepp.backend.v1.security.SecurityConstants.*;
 @Component
 @Slf4j
 public class JwtTokenProvider {
-  /*public String generateToken(Authentication authentication){
-    final String authorities = authentication.getAuthorities().stream()
-        .map(GrantedAuthority::getAuthority)
-        .collect(Collectors.joining(","));
-
-    return Jwts.builder()
-        .setSubject(authentication.getName())
-        //.setId(userId)
-        .claim(AUTHORITIES, authorities)
-        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-        .signWith(SignatureAlgorithm.HS512, SECRET)
-        .compact();
-  }*/
-
-  public String generateToken(String userId, String email, List<SimpleGrantedAuthority> authorityList){
+  public String generateToken(String userId, String email, List<SimpleGrantedAuthority> authorityList) {
     final String authorities = authorityList.stream()
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.joining(","));
 
     return Jwts.builder()
-        .setSubject(email)
-        //.setId(userId)
+        //.setSubject(email)
         .claim(USER_ID, userId)
         .claim(AUTHORITIES, authorities)
         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -59,16 +41,17 @@ public class JwtTokenProvider {
         .setSigningKey(SECRET)
         .parseClaimsJws(token)
         .getBody()
-        .getSubject();
+        .get(USER_ID)
+        .toString();
   }
 
-  public String getUsernameFromToken(String token) {
+  /*public String getUsernameFromToken(String token) {
     return Jwts.parser()
         .setSigningKey(SECRET)
         .parseClaimsJws(token)
         .getBody()
         .getSubject();
-  }
+  }*/
 
   UsernamePasswordAuthenticationToken getAuthentication(final String token,
                                                         final UserDetails userDetails) {
@@ -105,22 +88,5 @@ public class JwtTokenProvider {
       log.error("JWT claims string is empty.");
     }
     return false;
-  }
-
-  public Boolean validateToken(String token, UserDetails userDetails) {
-    /*final String userId = getIdFromToken(token);
-    return (userId.equals(userDetails.getUsername()) && !isTokenExpired(token));*/
-
-    final String username = getUsernameFromToken(token);
-    return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-  }
-
-  private Boolean isTokenExpired(String token) {
-    return Jwts
-        .parser()
-        .setSigningKey(SECRET)
-        .parseClaimsJws(token)
-        .getBody()
-        .getExpiration().before(new Date());
   }
 }

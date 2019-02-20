@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bson.types.ObjectId;
 
 /**
  * Created by emre on 28.01.2019

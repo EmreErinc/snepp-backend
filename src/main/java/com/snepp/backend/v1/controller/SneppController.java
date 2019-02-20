@@ -24,17 +24,17 @@ public class SneppController {
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/")
-  public boolean add(@RequestBody SneppRequest sneppRequest){
+  public boolean add(@RequestBody SneppRequest sneppRequest) {
     return sneppService.save(sneppRequest);
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{sneppId}")
-  public SingleSneppResponse snepp(@PathVariable String sneppId){
+  public SingleSneppResponse snepp(@PathVariable String sneppId) {
     return sneppService.getSnepp(sneppId);
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/list/{ownerId}")
-  public List<SneppResponse> list(@PathVariable String ownerId){
+  public List<SneppResponse> list(@PathVariable String ownerId) {
     return sneppService.listSneppByOwnerId(ownerId);
   }
 }

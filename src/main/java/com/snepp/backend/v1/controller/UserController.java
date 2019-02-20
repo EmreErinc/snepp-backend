@@ -26,13 +26,13 @@ public class UserController {
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/register")
-  public RegisterResponse register(@RequestBody RegisterRequest registerRequest){
+  public RegisterResponse register(@RequestBody RegisterRequest registerRequest) {
     //registerRequest.setPassword(bCryptPasswordEncoder.encode(registerRequest.getPassword()));
     return userService.register(registerRequest);
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/login")
-  public LoginResponse login(@RequestBody LoginRequest loginRequest){
+  public LoginResponse login(@RequestBody LoginRequest loginRequest) {
     //loginRequest.setPassword(bCryptPasswordEncoder.encode(loginRequest.getPassword()));
     return userService.login(loginRequest);
   }

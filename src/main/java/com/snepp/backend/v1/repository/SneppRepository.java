@@ -1,8 +1,6 @@
 package com.snepp.backend.v1.repository;
 
 import com.snepp.backend.v1.model.entity.SneppEntity;
-import com.snepp.backend.v1.model.response.SingleSneppResponse;
-import com.snepp.backend.v1.model.response.SneppResponse;
 
 import java.util.List;
 
@@ -11,7 +9,9 @@ import java.util.List;
  */
 public interface SneppRepository {
   SneppEntity save(SneppEntity sneppEntity);
+
   SneppEntity findById(String id);
+
   List<SneppEntity> listByOwnerId(String ownerId);
 
 }

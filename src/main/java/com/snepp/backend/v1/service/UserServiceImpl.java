@@ -10,7 +10,6 @@ import com.snepp.backend.v1.repository.UserRepository;
 import com.snepp.backend.v1.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -41,9 +40,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
-  public RegisterResponse register(RegisterRequest registerRequest){
+  public RegisterResponse register(RegisterRequest registerRequest) {
     RegisterResponse registerResponse = RegisterResponse.builder().build();
-    if (!userRepository.isExistsEmail(registerRequest.getEmail())){
+    if (!userRepository.isExistsEmail(registerRequest.getEmail())) {
       UserEntity userEntity = UserEntity.builder()
           .name(registerRequest.getName())
           .lastName(registerRequest.getLastName())
@@ -62,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   public LoginResponse login(LoginRequest loginRequest) {
     LoginResponse loginResponse = LoginResponse.builder().build();
 
-    if(userRepository.isExistsEmail(loginRequest.getEmail())){
+    if (userRepository.isExistsEmail(loginRequest.getEmail())) {
       UserEntity userEntity = userRepository.findUserWithEmailAndPassword(loginRequest);
       loginResponse.setId(userEntity.getId().toString());
       loginResponse.setToken(generateToken(userEntity.getId().toString(), userEntity.getEmail(), userEntity.getRoles()));
@@ -70,7 +69,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     return loginResponse;
   }
 
-  private String generateToken(String userId, String email, List<Role> roles){
+  private String generateToken(String userId, String email, List<Role> roles) {
     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
     roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.name())));
     return tokenProvider.generateToken(userId, email, authorities);
@@ -82,9 +81,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    UserEntity userEntity = userRepository.findByEmail(email);
-    if (userEntity == null){
+  public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+    //UserEntity userEntity = userRepository.findByEmail(email);
+    UserEntity userEntity = userRepository.findByUserId(userId);
+    if (userEntity == null) {
       try {
         throw new Exception("user not found");
       } catch (Exception e) {
