@@ -14,7 +14,7 @@ public class BackendApplication extends SpringBootServletInitializer {
 
   @Override
   protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-    return application.sources(BackendApplication .class);
+    return application.sources(BackendApplication.class);
   }
 
   public static void main(String[] args) {
@@ -22,7 +22,7 @@ public class BackendApplication extends SpringBootServletInitializer {
   }
 
   @Bean
-  public WebMvcConfigurer configurer(){
+  public WebMvcConfigurer configurer() {
     return new WebMvcConfigurer() {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
@@ -32,7 +32,7 @@ public class BackendApplication extends SpringBootServletInitializer {
   }
 
   @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder(){
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
     return new BCryptPasswordEncoder();
   }
 

@@ -1,10 +1,7 @@
 package com.snepp.backend.v1.repository;
 
-import com.mongodb.util.JSON;
 import com.snepp.backend.v1.model.entity.UserEntity;
 import com.snepp.backend.v1.model.request.LoginRequest;
-import com.snepp.backend.v1.model.request.RegisterRequest;
-import com.snepp.backend.v1.model.response.RegisterResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
 
 /**
  * Created by emre on 29.01.2019

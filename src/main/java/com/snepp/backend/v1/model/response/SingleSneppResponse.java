@@ -5,7 +5,6 @@ import com.snepp.backend.v1.model.SneppType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bson.types.ObjectId;
 
 /**
  * Created by emre on 01.02.2019

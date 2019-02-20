@@ -50,9 +50,9 @@
             <scope>test</scope>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.snepp</groupId>-->
-            <!--<artifactId>backend</artifactId>-->
-            <!--<version>0.0.1-SNAPSHOT</version>-->
+        <!--<groupId>com.snepp</groupId>-->
+        <!--<artifactId>backend</artifactId>-->
+        <!--<version>0.0.1-SNAPSHOT</version>-->
         <!--</dependency>-->
     </dependencies>
 
@@ -62,14 +62,14 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!--<configuration>-->
-                    <!--<mainClass>com.snepp.backend.BackendApplication</mainClass>-->
+                <!--<mainClass>com.snepp.backend.BackendApplication</mainClass>-->
                 <!--</configuration>-->
                 <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<goals>-->
-                            <!--<goal>repackage</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
+                <!--<execution>-->
+                <!--<goals>-->
+                <!--<goal>repackage</goal>-->
+                <!--</goals>-->
+                <!--</execution>-->
                 <!--</executions>-->
             </plugin>
         </plugins>

@@ -11,6 +11,8 @@ import com.snepp.backend.v1.model.response.RegisterResponse;
  */
 public interface UserService {
   RegisterResponse register(RegisterRequest registerRequest);
+
   LoginResponse login(LoginRequest loginRequest);
+
   UserEntity findById(String userId);
 }

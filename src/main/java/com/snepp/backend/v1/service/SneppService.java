@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface SneppService {
   boolean save(SneppRequest sneppRequest);
+
   SingleSneppResponse getSnepp(String id);
+
   List<SneppResponse> listSneppByOwnerId(String ownerId);
 }
