@@ -21,10 +21,10 @@ public class SneppServiceImpl implements SneppService {
   private SneppRepository sneppRepository;
 
   @Override
-  public boolean save(SneppRequest sneppRequest) {
+  public boolean save(SneppRequest sneppRequest, String userId) {
     boolean result = false;
     SneppEntity sneppEntity = SneppEntity.builder()
-        .ownerId(sneppRequest.ownerId)
+        .ownerId(userId)
         .name(sneppRequest.name)
         .description(sneppRequest.description)
         .language(sneppRequest.language)
@@ -42,28 +42,36 @@ public class SneppServiceImpl implements SneppService {
   }
 
   @Override
-  public SingleSneppResponse getSnepp(String id) {
+  public SingleSneppResponse getSnepp(String id, String userId) {
     SneppEntity sneppEntity = sneppRepository.findById(id);
-    return SingleSneppResponse.builder()
-        .name(sneppEntity.getName())
-        .description(sneppEntity.getDescription())
-        .language(sneppEntity.getLanguage())
-        .snippet(sneppEntity.getSnippet())
-        .type(sneppEntity.getType())
-        .ownerId(sneppEntity.getOwnerId())
-        .build();
+    if (sneppEntity.getOwnerId().equals(userId)) {
+      return SingleSneppResponse.builder()
+          .name(sneppEntity.getName())
+          .description(sneppEntity.getDescription())
+          .language(sneppEntity.getLanguage())
+          .snippet(sneppEntity.getSnippet())
+          .type(sneppEntity.getType())
+          .ownerId(sneppEntity.getOwnerId())
+          .build();
+    } else {
+      throw new RuntimeException("Unauthorized Request");
+    }
   }
 
   @Override
-  public List<SneppResponse> listSneppByOwnerId(String ownerId) {
+  public List<SneppResponse> listSneppByOwnerId(String ownerId, String userId) {
     List<SneppEntity> sneppEntities = sneppRepository.listByOwnerId(ownerId);
-    return sneppEntities.stream()
-        .map(sneppEntity ->
-            SneppResponse.builder()
-                .id(sneppEntity.getId().toString())
-                .name(sneppEntity.getName())
-                .snippet(sneppEntity.getSnippet())
-                .build())
-        .collect(Collectors.toList());
+    if (sneppEntities.stream().allMatch(sneppEntity -> sneppEntity.getOwnerId().equals(userId))) {
+      return sneppEntities.stream()
+          .map(sneppEntity ->
+              SneppResponse.builder()
+                  .id(sneppEntity.getId().toString())
+                  .name(sneppEntity.getName())
+                  .snippet(sneppEntity.getSnippet())
+                  .build())
+          .collect(Collectors.toList());
+    } else {
+      throw new RuntimeException("Unauthorized Request");
+    }
   }
 }

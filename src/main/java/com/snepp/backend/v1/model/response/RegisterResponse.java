@@ -15,4 +15,5 @@ import lombok.Setter;
 public class RegisterResponse {
   private String id;
   private String token;
+  private Info info;
 }
