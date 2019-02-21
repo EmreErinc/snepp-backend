@@ -5,7 +5,6 @@ import com.snepp.backend.v1.model.SneppType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -35,8 +34,4 @@ public class SneppRequest {
   @NotBlank
   @Size(min = 1, max = 15)
   public SneppType type;
-
-  @NotBlank
-  @Id
-  public String ownerId;
 }

@@ -10,9 +10,9 @@ import java.util.List;
  * Created by emre on 28.01.2019
  */
 public interface SneppService {
-  boolean save(SneppRequest sneppRequest);
+  boolean save(SneppRequest sneppRequest, String userId);
 
-  SingleSneppResponse getSnepp(String id);
+  SingleSneppResponse getSnepp(String id, String userId);
 
-  List<SneppResponse> listSneppByOwnerId(String ownerId);
+  List<SneppResponse> listSneppByOwnerId(String ownerId, String userId);
 }

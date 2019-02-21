@@ -4,6 +4,7 @@ import com.snepp.backend.v1.model.Role;
 import com.snepp.backend.v1.model.entity.UserEntity;
 import com.snepp.backend.v1.model.request.LoginRequest;
 import com.snepp.backend.v1.model.request.RegisterRequest;
+import com.snepp.backend.v1.model.response.Info;
 import com.snepp.backend.v1.model.response.LoginResponse;
 import com.snepp.backend.v1.model.response.RegisterResponse;
 import com.snepp.backend.v1.repository.UserRepository;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   public RegisterResponse register(RegisterRequest registerRequest) {
-    RegisterResponse registerResponse = RegisterResponse.builder().build();
+
     if (!userRepository.isExistsEmail(registerRequest.getEmail())) {
       UserEntity userEntity = UserEntity.builder()
           .name(registerRequest.getName())
@@ -51,33 +52,45 @@ public class UserServiceImpl implements UserService, UserDetailsService {
           .registrationAt(Instant.now().toEpochMilli())
           .roles(registerRequest.getRoles())
           .build();
-      registerResponse.setId(userRepository.saveUser(userEntity).toString());
-      registerResponse.setToken(generateToken(userEntity.getId().toString(), userEntity.getEmail(), userEntity.getRoles()));
+      return RegisterResponse.builder()
+          .id(userRepository.saveUser(userEntity).toString())
+          .token(generateToken(userEntity.getId().toString(), userEntity.getRoles()))
+          .info(Info.builder()
+              .email(userEntity.getEmail())
+              .name(userEntity.getName())
+              .lastName(userEntity.getLastName())
+              .roles(userEntity.getRoles())
+              .build())
+          .build();
+    } else {
+      throw new RuntimeException("User Already Registered");
     }
-    return registerResponse;
+
   }
 
   @Override
   public LoginResponse login(LoginRequest loginRequest) {
-    LoginResponse loginResponse = LoginResponse.builder().build();
-
     if (userRepository.isExistsEmail(loginRequest.getEmail())) {
       UserEntity userEntity = userRepository.findUserWithEmailAndPassword(loginRequest);
-      loginResponse.setId(userEntity.getId().toString());
-      loginResponse.setToken(generateToken(userEntity.getId().toString(), userEntity.getEmail(), userEntity.getRoles()));
+      return LoginResponse.builder()
+          .id(userEntity.getId().toString())
+          .token(generateToken(userEntity.getId().toString(), userEntity.getRoles()))
+          .info(Info.builder()
+              .email(userEntity.getEmail())
+              .name(userEntity.getName())
+              .lastName(userEntity.getLastName())
+              .roles(userEntity.getRoles())
+              .build())
+          .build();
+    } else {
+      throw new RuntimeException("User Not Found");
     }
-    return loginResponse;
   }
 
-  private String generateToken(String userId, String email, List<Role> roles) {
+  private String generateToken(String userId, List<Role> roles) {
     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
     roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.name())));
-    return tokenProvider.generateToken(userId, email, authorities);
-  }
-
-  @Override
-  public UserEntity findById(String userId) {
-    return userRepository.findByUserId(userId);
+    return tokenProvider.generateToken(userId, authorities);
   }
 
   @Override
@@ -86,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     UserEntity userEntity = userRepository.findByUserId(userId);
     if (userEntity == null) {
       try {
-        throw new Exception("user not found");
+        throw new Exception("User Not Found");
       } catch (Exception e) {
         e.printStackTrace();
       }

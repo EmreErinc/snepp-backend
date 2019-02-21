@@ -22,7 +22,7 @@ import static com.snepp.backend.v1.security.SecurityConstants.*;
 @Component
 @Slf4j
 public class JwtTokenProvider {
-  public String generateToken(String userId, String email, List<SimpleGrantedAuthority> authorityList) {
+  public String generateToken(String userId, List<SimpleGrantedAuthority> authorityList) {
     final String authorities = authorityList.stream()
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.joining(","));
