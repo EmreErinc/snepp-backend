@@ -59,19 +59,17 @@ public class SneppServiceImpl implements SneppService {
   }
 
   @Override
-  public List<SneppResponse> listSneppByOwnerId(String ownerId, String userId) {
+  public List<SneppResponse> listSneppByOwnerId(String ownerId) {
     List<SneppEntity> sneppEntities = sneppRepository.listByOwnerId(ownerId);
-    if (sneppEntities.stream().allMatch(sneppEntity -> sneppEntity.getOwnerId().equals(userId))) {
-      return sneppEntities.stream()
-          .map(sneppEntity ->
-              SneppResponse.builder()
-                  .id(sneppEntity.getId().toString())
-                  .name(sneppEntity.getName())
-                  .snippet(sneppEntity.getSnippet())
-                  .build())
-          .collect(Collectors.toList());
-    } else {
-      throw new RuntimeException("Unauthorized Request");
-    }
+    return sneppEntities
+        .stream()
+        .map(sneppEntity ->
+            SneppResponse
+                .builder()
+                .id(sneppEntity.getId().toString())
+                .name(sneppEntity.getName())
+                .snippet(sneppEntity.getSnippet())
+                .build())
+        .collect(Collectors.toList());
   }
 }

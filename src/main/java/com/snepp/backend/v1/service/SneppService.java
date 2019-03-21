@@ -14,5 +14,5 @@ public interface SneppService {
 
   SingleSneppResponse getSnepp(String id, String userId);
 
-  List<SneppResponse> listSneppByOwnerId(String ownerId, String userId);
+  List<SneppResponse> listSneppByOwnerId(String ownerId);
 }
