@@ -36,8 +36,8 @@ public class SneppController extends BaseController {
     return sneppService.getSnepp(sneppId, getUserIdFromHeader(headers));
   }
 
-  @RequestMapping(method = RequestMethod.GET, value = "/list/{ownerId}")
-  public List<SneppResponse> list(@PathVariable String ownerId, @RequestHeader HttpHeaders headers) {
-    return sneppService.listSneppByOwnerId(ownerId, getUserIdFromHeader(headers));
+  @RequestMapping(method = RequestMethod.GET, value = "/list")
+  public List<SneppResponse> list(@RequestHeader HttpHeaders headers) {
+    return sneppService.listSneppByOwnerId(getUserIdFromHeader(headers));
   }
 }
