@@ -1,5 +1,6 @@
 package com.snepp.backend.v1.service;
 
+import com.snepp.backend.v1.exception.AuthorizationException;
 import com.snepp.backend.v1.exception.EntityNotFoundException;
 import com.snepp.backend.v1.model.entity.SneppEntity;
 import com.snepp.backend.v1.model.request.SneppRequest;
@@ -24,7 +25,7 @@ public class SneppServiceImpl implements SneppService {
   private SneppRepository sneppRepository;
 
   @Override
-  public boolean save(SneppRequest sneppRequest, String userId) {
+  public Boolean save(SneppRequest sneppRequest, String userId) {
     boolean result = false;
     SneppEntity sneppEntity = SneppEntity.builder()
         .ownerId(userId)
@@ -45,7 +46,9 @@ public class SneppServiceImpl implements SneppService {
   }
 
   @Override
-  public SingleSneppResponse getSnepp(String id, String userId) throws EntityNotFoundException {
+  public SingleSneppResponse getSnepp(String id, String userId) throws Exception {
+    authorizationControl(userId, id);
+
     Optional<SneppEntity> sneppEntity = sneppRepository.findById(id);
     if (sneppEntity.isPresent()) {
       return SingleSneppResponse.builder()
@@ -78,19 +81,37 @@ public class SneppServiceImpl implements SneppService {
   }
 
   @Override
-  public SingleSneppResponse updateSnepp(SneppUpdateRequest request) throws EntityNotFoundException{
-    if (sneppRepository.isExists(request.id)) {
-      Optional<SneppEntity> sneppEntity = sneppRepository.update(request);
+  public SingleSneppResponse updateSnepp(String id, SneppUpdateRequest request, String userId) throws Exception {
+    authorizationControl(userId, id);
+
+    if (sneppRepository.isExists(id)) {
+      Optional<SneppEntity> sneppEntity = sneppRepository.update(id, request);
       return SingleSneppResponse.builder()
           .name(sneppEntity.get().getName())
           .description(sneppEntity.get().getDescription())
           .language(sneppEntity.get().getLanguage())
           .snippet(sneppEntity.get().getSnippet())
           .type(sneppEntity.get().getType())
-          .ownerId(sneppEntity.get().getOwnerId())
           .build();
-    }else {
-      throw new EntityNotFoundException(SneppEntity.class, "id",request.id);
+    } else {
+      throw new EntityNotFoundException(SneppEntity.class, "id", id);
+    }
+  }
+
+  @Override
+  public Boolean deleteSnepp(String id, String userId) throws Exception {
+    authorizationControl(userId, id);
+
+    if (sneppRepository.isExists(id)) {
+      return sneppRepository.deleteById(id);
+    } else {
+      throw new EntityNotFoundException(SneppEntity.class, "id", id);
+    }
+  }
+
+  private void authorizationControl(String userId, String sneppId) throws AuthorizationException{
+    if (!sneppRepository.isAuthorized(userId, sneppId)){
+      throw new AuthorizationException();
     }
   }
 }

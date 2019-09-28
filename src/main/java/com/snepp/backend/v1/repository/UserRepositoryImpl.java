@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.Optional;
+
 /**
  * Created by emre on 29.01.2019
  */
@@ -43,8 +45,8 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
-  public UserEntity findByUserId(String userId) {
-    return mongoTemplate.findById(userId, UserEntity.class);
+  public Optional<UserEntity> findByUserId(String userId) {
+    return Optional.ofNullable(mongoTemplate.findById(userId, UserEntity.class));
   }
 
   @Override

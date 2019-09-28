@@ -4,6 +4,8 @@ import com.snepp.backend.v1.model.entity.UserEntity;
 import com.snepp.backend.v1.model.request.LoginRequest;
 import org.bson.types.ObjectId;
 
+import java.util.Optional;
+
 /**
  * Created by emre on 28.01.2019
  */
@@ -14,7 +16,7 @@ public interface UserRepository {
 
   UserEntity findUserWithEmailAndPassword(LoginRequest loginRequest);
 
-  UserEntity findByUserId(String userId);
+  Optional<UserEntity> findByUserId(String userId);
 
   UserEntity findByEmail(String email);
 }

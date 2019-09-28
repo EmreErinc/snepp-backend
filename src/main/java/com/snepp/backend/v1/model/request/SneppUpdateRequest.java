@@ -18,9 +18,6 @@ import javax.validation.constraints.Size;
 @JsonDeserialize
 public class SneppUpdateRequest {
   @NotBlank
-  public String id;
-
-  @NotBlank
   @Size(min = 1, max = 15)
   public String name;
 

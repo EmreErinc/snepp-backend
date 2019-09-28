@@ -1,7 +1,8 @@
 package com.snepp.backend.v1.controller;
 
-import com.snepp.backend.v1.exception.EntityNotFoundException;
 import com.snepp.backend.v1.model.request.SneppRequest;
+import com.snepp.backend.v1.model.request.SneppUpdateRequest;
+import com.snepp.backend.v1.model.response.Response;
 import com.snepp.backend.v1.model.response.SingleSneppResponse;
 import com.snepp.backend.v1.model.response.SneppResponse;
 import com.snepp.backend.v1.service.SneppService;
@@ -27,14 +28,24 @@ public class SneppController extends BaseController {
     this.sneppService = sneppService;
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/")
-  public boolean add(@RequestBody SneppRequest sneppRequest, @RequestHeader HttpHeaders headers) {
-    return sneppService.save(sneppRequest, getUserIdFromHeader(headers));
+  @RequestMapping(method = RequestMethod.POST)
+  public Response<Boolean> add(@RequestBody SneppRequest sneppRequest, @RequestHeader HttpHeaders headers) {
+    return new Response<>(sneppService.save(sneppRequest, getUserIdFromHeader(headers)));
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{sneppId}")
-  public SingleSneppResponse snepp(@PathVariable String sneppId, @RequestHeader HttpHeaders headers) throws EntityNotFoundException {
+  public SingleSneppResponse getSnepp(@PathVariable String sneppId, @RequestHeader HttpHeaders headers) throws Exception {
     return sneppService.getSnepp(sneppId, getUserIdFromHeader(headers));
+  }
+
+  @RequestMapping(method = RequestMethod.PUT, value = "/{sneppId}")
+  public SingleSneppResponse updateSnepp(@PathVariable String sneppId, @RequestBody SneppUpdateRequest request, @RequestHeader HttpHeaders headers) throws Exception {
+    return sneppService.updateSnepp(sneppId, request, getUserIdFromHeader(headers));
+  }
+
+  @RequestMapping(method = RequestMethod.DELETE, value = "/{sneppId}")
+  public Response<Boolean> deleteSnepp(@PathVariable String sneppId, @RequestHeader HttpHeaders headers) throws Exception {
+    return new Response<>(sneppService.deleteSnepp(sneppId, getUserIdFromHeader(headers)));
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/list")

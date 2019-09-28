@@ -16,9 +16,11 @@ public interface SneppRepository {
 
   Optional<List<SneppEntity>> listByOwnerId(String ownerId);
 
-  Optional<SneppEntity> update(SneppUpdateRequest request);
+  Optional<SneppEntity> update(String id, SneppUpdateRequest request);
 
   Boolean deleteById(String id);
 
-  Boolean isExists(String id);
+  boolean isExists(String id);
+
+  boolean isAuthorized(String userId, String sneppId);
 }
