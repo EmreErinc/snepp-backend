@@ -1,5 +1,6 @@
 package com.snepp.backend.v1.controller;
 
+import com.snepp.backend.v1.exception.AlreadyRegisteredException;
 import com.snepp.backend.v1.model.request.LoginRequest;
 import com.snepp.backend.v1.model.request.RegisterRequest;
 import com.snepp.backend.v1.model.response.LoginResponse;
@@ -26,13 +27,13 @@ public class UserController {
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/register")
-  public RegisterResponse register(@RequestBody RegisterRequest registerRequest) {
+  public RegisterResponse register(@RequestBody RegisterRequest registerRequest) throws AlreadyRegisteredException {
     //registerRequest.setPassword(bCryptPasswordEncoder.encode(registerRequest.getPassword()));
     return userService.register(registerRequest);
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/login")
-  public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+  public LoginResponse login(@RequestBody LoginRequest loginRequest) throws Exception {
     //loginRequest.setPassword(bCryptPasswordEncoder.encode(loginRequest.getPassword()));
     return userService.login(loginRequest);
   }

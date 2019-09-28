@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,18 +44,17 @@ public class SneppRepositoryImpl implements SneppRepository {
   }
 
   @Override
-  public Optional<SneppEntity> update(SneppUpdateRequest request) {
+  public Optional<SneppEntity> update(String id, SneppUpdateRequest request) {
     Query query = new Query();
-    query.addCriteria(Criteria.where("id").is(request.id));
+    query.addCriteria(Criteria.where("id").is(id));
 
     SneppEntity foundEntity = mongoTemplate.findOne(query, SneppEntity.class);
-    foundEntity.builder()
-        .name(request.name)
-        .description(request.description)
-        .snippet(request.snippet)
-        .type(request.type)
-        .language(request.language)
-        .build();
+    foundEntity.setName(request.name);
+    foundEntity.setDescription(request.description);
+    foundEntity.setSnippet(request.snippet);
+    foundEntity.setType(request.type);
+    foundEntity.setLanguage(request.language);
+    foundEntity.setUpdatedAt(Instant.now().toEpochMilli());
 
     return Optional.of(mongoTemplate.save(foundEntity));
   }
@@ -67,9 +67,16 @@ public class SneppRepositoryImpl implements SneppRepository {
   }
 
   @Override
-  public Boolean isExists(String id) {
+  public boolean isExists(String id) {
     Query query = new Query();
     query.addCriteria(Criteria.where("id").is(id));
+    return mongoTemplate.exists(query, SneppEntity.class);
+  }
+
+  @Override
+  public boolean isAuthorized(String userId, String sneppId) {
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(sneppId).and("ownerId").is(userId));
     return mongoTemplate.exists(query, SneppEntity.class);
   }
 }

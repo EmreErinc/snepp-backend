@@ -1,5 +1,7 @@
 package com.snepp.backend.v1.service;
 
+import com.snepp.backend.v1.exception.AlreadyRegisteredException;
+import com.snepp.backend.v1.exception.EntityNotFoundException;
 import com.snepp.backend.v1.model.Role;
 import com.snepp.backend.v1.model.entity.UserEntity;
 import com.snepp.backend.v1.model.request.LoginRequest;
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
-  public RegisterResponse register(RegisterRequest registerRequest) {
+  public RegisterResponse register(RegisterRequest registerRequest) throws AlreadyRegisteredException {
 
     if (!userRepository.isExistsEmail(registerRequest.getEmail())) {
       UserEntity userEntity = UserEntity.builder()
@@ -60,13 +62,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
               .build())
           .build();
     } else {
-      throw new RuntimeException("User Already Registered");
+      throw new AlreadyRegisteredException();
     }
-
   }
 
   @Override
-  public LoginResponse login(LoginRequest loginRequest) {
+  public LoginResponse login(LoginRequest loginRequest) throws Exception {
     if (userRepository.isExistsEmail(loginRequest.getEmail())) {
       UserEntity userEntity = userRepository.findUserWithEmailAndPassword(loginRequest);
       return LoginResponse.builder()
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
               .build())
           .build();
     } else {
-      throw new RuntimeException("User Not Found");
+      throw new EntityNotFoundException(UserEntity.class, "User Not Found");
     }
   }
 
@@ -93,15 +94,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
     //UserEntity userEntity = userRepository.findByEmail(email);
-    UserEntity userEntity = userRepository.findByUserId(userId);
-    if (userEntity == null) {
-      try {
-        throw new Exception("User Not Found");
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+    Optional<UserEntity> userEntity = userRepository.findByUserId(userId);
+    if (!userEntity.isPresent()) {
+      throw new UsernameNotFoundException("User Not Found");
     }
-    return new org.springframework.security.core.userdetails.User(userEntity.getEmail(), userEntity.getPassword(), getAuthority(userEntity));
+    return new org.springframework.security.core.userdetails.User(userEntity.get().getEmail(), userEntity.get().getPassword(), getAuthority(userEntity.get()));
   }
 
   private Set getAuthority(UserEntity userEntity) {

@@ -12,11 +12,13 @@ import java.util.List;
  * Created by emre on 28.01.2019
  */
 public interface SneppService {
-  boolean save(SneppRequest sneppRequest, String userId);
+  Boolean save(SneppRequest sneppRequest, String userId);
 
-  SingleSneppResponse getSnepp(String id, String userId) throws EntityNotFoundException;
+  SingleSneppResponse getSnepp(String id, String userId) throws Exception;
 
   List<SneppResponse> listSneppByOwnerId(String ownerId);
 
-  SingleSneppResponse updateSnepp(SneppUpdateRequest request) throws EntityNotFoundException;
+  SingleSneppResponse updateSnepp(String id, SneppUpdateRequest request, String userId) throws Exception;
+
+  Boolean deleteSnepp(String id, String userId) throws Exception;
 }

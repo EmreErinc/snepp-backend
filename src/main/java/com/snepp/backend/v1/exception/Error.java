@@ -47,6 +47,12 @@ public class Error {
     this.debugMessage = ex.getLocalizedMessage();
   }
 
+  Error(HttpStatus status, String message){
+    this();
+    this.status = status;
+    this.message = message;
+  }
+
   Error(HttpStatus status, String message, Throwable ex) {
     this();
     this.status = status;
