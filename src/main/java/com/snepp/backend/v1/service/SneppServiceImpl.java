@@ -1,7 +1,9 @@
 package com.snepp.backend.v1.service;
 
+import com.snepp.backend.v1.exception.EntityNotFoundException;
 import com.snepp.backend.v1.model.entity.SneppEntity;
 import com.snepp.backend.v1.model.request.SneppRequest;
+import com.snepp.backend.v1.model.request.SneppUpdateRequest;
 import com.snepp.backend.v1.model.response.SingleSneppResponse;
 import com.snepp.backend.v1.model.response.SneppResponse;
 import com.snepp.backend.v1.repository.SneppRepository;
@@ -10,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -42,26 +45,27 @@ public class SneppServiceImpl implements SneppService {
   }
 
   @Override
-  public SingleSneppResponse getSnepp(String id, String userId) {
-    SneppEntity sneppEntity = sneppRepository.findById(id);
-    if (sneppEntity.getOwnerId().equals(userId)) {
+  public SingleSneppResponse getSnepp(String id, String userId) throws EntityNotFoundException {
+    Optional<SneppEntity> sneppEntity = sneppRepository.findById(id);
+    if (sneppEntity.isPresent()) {
       return SingleSneppResponse.builder()
-          .name(sneppEntity.getName())
-          .description(sneppEntity.getDescription())
-          .language(sneppEntity.getLanguage())
-          .snippet(sneppEntity.getSnippet())
-          .type(sneppEntity.getType())
-          .ownerId(sneppEntity.getOwnerId())
+          .name(sneppEntity.get().getName())
+          .description(sneppEntity.get().getDescription())
+          .language(sneppEntity.get().getLanguage())
+          .snippet(sneppEntity.get().getSnippet())
+          .type(sneppEntity.get().getType())
+          .ownerId(sneppEntity.get().getOwnerId())
           .build();
     } else {
-      throw new RuntimeException("Unauthorized Request");
+      throw new EntityNotFoundException(SneppEntity.class, "id", id);
     }
   }
 
   @Override
   public List<SneppResponse> listSneppByOwnerId(String ownerId) {
-    List<SneppEntity> sneppEntities = sneppRepository.listByOwnerId(ownerId);
+    Optional<List<SneppEntity>> sneppEntities = sneppRepository.listByOwnerId(ownerId);
     return sneppEntities
+        .get()
         .stream()
         .map(sneppEntity ->
             SneppResponse
@@ -71,5 +75,22 @@ public class SneppServiceImpl implements SneppService {
                 .snippet(sneppEntity.getSnippet())
                 .build())
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public SingleSneppResponse updateSnepp(SneppUpdateRequest request) throws EntityNotFoundException{
+    if (sneppRepository.isExists(request.id)) {
+      Optional<SneppEntity> sneppEntity = sneppRepository.update(request);
+      return SingleSneppResponse.builder()
+          .name(sneppEntity.get().getName())
+          .description(sneppEntity.get().getDescription())
+          .language(sneppEntity.get().getLanguage())
+          .snippet(sneppEntity.get().getSnippet())
+          .type(sneppEntity.get().getType())
+          .ownerId(sneppEntity.get().getOwnerId())
+          .build();
+    }else {
+      throw new EntityNotFoundException(SneppEntity.class, "id",request.id);
+    }
   }
 }

@@ -14,10 +14,10 @@ import lombok.Setter;
 @Setter
 @JsonSerialize
 public class SingleSneppResponse {
-  public String name;
-  public String description;
-  public String language;
-  public String snippet;
-  public SneppType type;
-  public String ownerId;
+  private String name;
+  private String description;
+  private String language;
+  private String snippet;
+  private SneppType type;
+  private String ownerId;
 }
