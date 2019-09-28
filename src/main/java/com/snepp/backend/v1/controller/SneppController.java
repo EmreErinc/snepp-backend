@@ -1,5 +1,6 @@
 package com.snepp.backend.v1.controller;
 
+import com.snepp.backend.v1.exception.EntityNotFoundException;
 import com.snepp.backend.v1.model.request.SneppRequest;
 import com.snepp.backend.v1.model.response.SingleSneppResponse;
 import com.snepp.backend.v1.model.response.SneppResponse;
@@ -32,7 +33,7 @@ public class SneppController extends BaseController {
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{sneppId}")
-  public SingleSneppResponse snepp(@PathVariable String sneppId, @RequestHeader HttpHeaders headers) {
+  public SingleSneppResponse snepp(@PathVariable String sneppId, @RequestHeader HttpHeaders headers) throws EntityNotFoundException {
     return sneppService.getSnepp(sneppId, getUserIdFromHeader(headers));
   }
 

@@ -15,5 +15,5 @@ import java.util.List;
 @Setter
 @JsonSerialize
 public class SneppListResponse {
-  public List<SneppResponse> sneppResponseList;
+  private List<SneppResponse> sneppResponseList;
 }
