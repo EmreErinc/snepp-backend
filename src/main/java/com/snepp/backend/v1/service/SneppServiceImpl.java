@@ -75,6 +75,7 @@ public class SneppServiceImpl implements SneppService {
                 .builder()
                 .id(sneppEntity.getId().toString())
                 .name(sneppEntity.getName())
+                .description(sneppEntity.getDescription())
                 .snippet(sneppEntity.getSnippet())
                 .build())
         .collect(Collectors.toList());
