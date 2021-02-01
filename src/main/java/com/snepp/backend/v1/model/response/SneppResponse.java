@@ -13,7 +13,8 @@ import lombok.Setter;
 @Setter
 @JsonSerialize
 public class SneppResponse {
-  public String id;
-  public String name;
-  public String snippet;
+  private String id;
+  private String name;
+  private String description;
+  private String snippet;
 }

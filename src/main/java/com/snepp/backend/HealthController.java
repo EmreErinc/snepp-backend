@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthController {
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public String health(){
+  @RequestMapping(method = RequestMethod.GET, value = "/")
+  public String health() {
     return "healthy connection";
   }
 }

@@ -6,14 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by emre on 28.01.2019
+ * Created by emre on 29.09.2019
  */
 @Builder
 @Getter
 @Setter
 @JsonSerialize
-public class LoginResponse {
-  private String id;
-  private String token;
-  private Info info;
+public class Response<T> {
+  private T result;
+
+  public Response(T result){
+    this.result = result;
+  }
 }

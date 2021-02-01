@@ -5,7 +5,6 @@ import com.snepp.backend.v1.model.SneppType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.bson.types.ObjectId;
 
 /**
  * Created by emre on 01.02.2019
@@ -15,10 +14,10 @@ import org.bson.types.ObjectId;
 @Setter
 @JsonSerialize
 public class SingleSneppResponse {
-  public String name;
-  public String description;
-  public String language;
-  public String snippet;
-  public SneppType type;
-  public String ownerId;
+  private String name;
+  private String description;
+  private String language;
+  private String snippet;
+  private SneppType type;
+  private String ownerId;
 }
